@@ -1,0 +1,76 @@
+{% extends "qa_app/base.html" %}
+{% block title %}{{ question.title }} - Quora Clone{% endblock %}
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h2 class="card-title">{{ question.title }}</h2>
+    </div>
+    <div class="card-body">
+        <p class="card-text">{{ question.content }}</p>
+    </div>
+    <div class="card-footer text-muted">
+        <small>Asked by: {{ question.user.username }} on {{ question.created_at|date:"F d, Y" }}</small>
+    </div>
+</div>
+
+<h3 class="mb-3">{{ answers.count }} Answer(s)</h3>
+
+{% if answers %}
+    {% for answer in answers %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <p class="card-text">{{ answer.content }}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">
+                    Answered by: {{ answer.user.username }} on {{ answer.created_at|date:"F d, Y" }}
+                </small>
+                <div>
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'like_answer' answer.pk %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="like-btn">
+                            {% if user in answer.likes.all %}
+                            <i class="fas fa-heart"></i> Unlike
+                            {% else %}
+                            <i class="far fa-heart"></i> Like
+                            {% endif %}
+                            ({{ answer.likes.count }})
+                        </button>
+                    </form>
+                    {% else %}
+                    <span class="text-muted">
+                        <i class="far fa-heart"></i> {{ answer.likes.count }} likes
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-secondary mb-4">
+        No answers yet. Be the first to answer!
+    </div>
+{% endif %}
+
+{% if user.is_authenticated %}
+<div class="card">
+    <div class="card-header bg-light">
+        <h4 class="card-title">Your Answer</h4>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                {{ answer_form.content }}
+            </div>
+            <button type="submit" class="btn btn-primary">Post Answer</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info">
+    <a href="{% url 'login' %}">Log in</a> to post an answer.
+</div>
+{% endif %}
+{% endblock %}
