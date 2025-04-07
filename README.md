@@ -19,7 +19,39 @@ A simple Quora-like Q&A platform built with Django. This application allows user
   - View answers from other users
   - Like/unlike answers
 
+## Project Structure
 
+```
+quora_clone/
+├── manage.py
+├── requirements.txt
+├── quora_clone/          # Project settings
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+└── qa_app/               # Main application
+    ├── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── forms.py
+    ├── migrations/
+    ├── models.py
+    ├── urls.py
+    ├── views.py
+    ├── templates/        # HTML templates
+    │   └── qa_app/  
+    │       ├── base.html
+    │       ├── login.html
+    │       ├── register.html
+    │       ├── home.html
+    │       ├── ask_question.html
+    │       ├── question_detail.html
+    │       ├── profile.html
+    │       └── logout.html
+    
+```
 
 ## Installation & Setup
 
@@ -89,3 +121,18 @@ Access the admin interface at http://127.0.0.1:8000/admin/ using your superuser 
 - Create, edit, or delete questions
 - Manage answers
 - View and modify likes
+
+## Notes for Developers
+
+- Templates follow Django's app-based organization pattern with namespacing
+- User authentication uses Django's built-in auth system
+- Bootstrap is used for frontend styling
+- Models implement proper relationships for the Q&A functionality
+
+## Future Enhancements
+
+- Add comment system for answers
+- Implement question categories/tags
+- Add user reputation system
+- Support markdown in questions and answers
+- Add search functionality
